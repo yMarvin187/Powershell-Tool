@@ -1,16 +1,11 @@
-$ErrorActionPreference = "SilentlyContinue" 
+$ErrorActionPreference = "SilentlyContinue"
+
 function Show-MainMenu {
     return Read-Host "`n`n`nChoose a Category:`n
     (1)`t`tChecks`n
     (2)`t`tPrograms`n
     (3)`t`tClean Traces`n
     (0)`t`tClose Script`n`nChoose"
-}
-
-function Show-ChecksMenu {
-    return Read-Host "`n`n`nChecks Menu:`n
-    (1)`tStart Check`n
-    (0)`tBack to Main Menu`n`nChoose"
 }
 
 function Show-ProgramsMenu {
@@ -52,49 +47,37 @@ do {
     $mainChoice = Show-MainMenu
     switch ($mainChoice) {
         "1" {
-            do {
-                Clear-Host
-                $checksChoice = Show-ChecksMenu
-                switch ($checksChoice) {
-                    1 {
-                        Write-Host "`n`nPerforming Check..." -ForegroundColor yellow
-                        New-Item -Path "C:\Temp\Scripts" -ItemType Directory -Force | Out-Null
-                        New-Item -Path "C:\Temp\Dump" -ItemType Directory -Force | Out-Null
-                        Set-Location "C:\temp"
-                        Get-ChildItem -Path "C:\Temp\Dump" | Remove-Item -Recurse -Force | Out-Null
-                        Get-ChildItem -Path "C:\Temp\Scripts" -File | Where-Object { $_.Name -ne "Menu.ps1" } | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force } | Out-Null
-                        $urls = @(
-                            "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/PCCheck.ps1",
-                            "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/QuickMFT.ps1",
-                            "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/Registry.ps1",
-                            "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/SystemLogs.ps1",
-                            "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/ProcDump.ps1",
-                            "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/Localhost.ps1",
-                            "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/Viewer.html"
-                        )
-                        $destinationPath = "C:\Temp\Scripts"
-                        foreach ($url in $urls) {
-                            $fileName = [System.IO.Path]::GetFileName($url)
-                            $destinationFile = Join-Path -Path $destinationPath -ChildPath $fileName
-                            Invoke-WebRequest -Uri $url -OutFile $destinationFile
-                            if (Test-Path -Path $destinationFile) {
-                                Write-Host "$fileName downloaded successfully."
-                            } else {
-                                Write-Host "Failed to download $fileName."
-                            }
-                        }
-                        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
-                        Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
-                        & "C:\Temp\Scripts\PCCheck.ps1"
-                        return
-                    }
-                    0 { break }
-                    default {
-                        Write-Host "`n`nInvalid option selected. Returning to Checks Menu." -ForegroundColor red
-                        Start-Sleep 3
-                    }
+            Clear-Host
+            Write-Host "`n`nPerforming Check..." -ForegroundColor yellow
+            New-Item -Path "C:\Temp\Scripts" -ItemType Directory -Force | Out-Null
+            New-Item -Path "C:\Temp\Dump" -ItemType Directory -Force | Out-Null
+            Set-Location "C:\temp"
+            Get-ChildItem -Path "C:\Temp\Dump" | Remove-Item -Recurse -Force | Out-Null
+            Get-ChildItem -Path "C:\Temp\Scripts" -File | Where-Object { $_.Name -ne "Menu.ps1" } | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force } | Out-Null
+            $urls = @(
+                "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/PCCheck.ps1",
+                "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/QuickMFT.ps1",
+                "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/Registry.ps1",
+                "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/SystemLogs.ps1",
+                "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/ProcDump.ps1",
+                "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/Localhost.ps1",
+                "https://raw.githubusercontent.com/dot-sys/PCCheckv2/master/Viewer.html"
+            )
+            $destinationPath = "C:\Temp\Scripts"
+            foreach ($url in $urls) {
+                $fileName = [System.IO.Path]::GetFileName($url)
+                $destinationFile = Join-Path -Path $destinationPath -ChildPath $fileName
+                Invoke-WebRequest -Uri $url -OutFile $destinationFile
+                if (Test-Path -Path $destinationFile) {
+                    Write-Host "$fileName downloaded successfully."
+                } else {
+                    Write-Host "Failed to download $fileName."
                 }
-            } while ($checksChoice -ne 0)
+            }
+            Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+            Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
+            & "C:\Temp\Scripts\PCCheck.ps1"
+            return
         }
         "2" {
             do {
@@ -152,7 +135,7 @@ do {
                         Write-Host "`n`nInvalid option selected. Returning to Programs Menu." -ForegroundColor red
                         Start-Sleep 3
                     }
-                }                
+                }
             } while ($programsChoice -ne 0)
         }
         "clean" {
