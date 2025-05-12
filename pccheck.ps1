@@ -1,5 +1,5 @@
 $ErrorActionPreference = "SilentlyContinue" 
-$configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/dot-sys/cfg/master/cfg.json" 
+$configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/yMarvin187/Powershell-Tool/refs/heads/main/cfg.json" 
 $Astra = $configJson.Astra
 $FilesizeH = $configJson.FilesizeH
 $FilesizeL = $configJson.FilesizeL
