@@ -3,7 +3,7 @@ function Show-MainMenu {
     return Read-Host "`n`n`nChoose a Category:`n
     (1)`t`tChecks`n
     (2)`t`tPrograms`n
-    (3)`tClean Traces`n
+    (3)`t`tClean Traces`n
     (0)`t`tClose Script`n`nChoose"
 }
 
